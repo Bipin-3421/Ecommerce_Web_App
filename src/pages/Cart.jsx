@@ -21,7 +21,7 @@ const Cart = () => {
   }, [product]);
 
   return (
-    <div className="w-full p-8  bg-white mt-[5rem] ">
+    <div className="w-full p-8  bg-white">
       {product.map((item) => (
         <div
           key={item.id}

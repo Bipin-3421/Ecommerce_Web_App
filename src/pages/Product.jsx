@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import items from "../data/items";
 import { addItem } from "../app/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import "rc-slider/assets/index.css";
+import Slider from "rc-slider";
 
 const Products = () => {
   const items = useSelector((state) => state.cart.items);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredItems, setFilteredItems] = useState(items);
+  const [sortBy, setSortBy] = useState("price-low-to-high");
 
   const categories = [
     { id: 1, category: "All" },
@@ -16,9 +18,9 @@ const Products = () => {
   ];
 
   const price = items.map((item) => item.price);
-  const [maxPrice, setMaxPrice] = useState("");
 
-  const [minPrice, setMinPrice] = useState("");
+  const [minPrice, setMinPrice] = useState(1500);
+  const [maxPrice, setMaxPrice] = useState(20000);
   // const handleMaxPriceChange = (e) => {
   //   setMaxPrice(parseFloat(e.target.value));
   // };
@@ -40,38 +42,69 @@ const Products = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    applyFilter();
+  }, [selectedCategory, sortBy]);
   // const filteredProducts = items.filter((product) => {
   //   return product.price <= maxPrice;
   // });
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    applyFilter(category);
-  };
-
-  const handleApplyFilter = () => {
-    applyFilter(selectedCategory);
-  };
-
   // if no minPrice then !minPrice evaluates to true and the operation ends so for maxm too
-  const applyFilter = (selectedCategory) => {
+  const applyFilter = () => {
     const filteredProducts = items.filter((product) => {
       const inPriceRange =
         (!minPrice || product.price >= minPrice) &&
         (!maxPrice || product.price <= maxPrice);
-      console.log(inPriceRange);
+      // console.log(inPriceRange);
       if (selectedCategory === "All") {
         return inPriceRange;
       } else {
         return product.category === selectedCategory && inPriceRange;
       }
     });
-    setFilteredItems(filteredProducts);
+    let sortedProducts = [...filteredProducts];
+    if (sortBy === "price-low-to-high") {
+      sortedProducts.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-high-to-low") {
+      sortedProducts.sort((a, b) => b.price - a.price);
+    }
+    setFilteredItems(sortedProducts);
+    console.log(sortedProducts);
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    applyFilter(); // Apply filter when the sort option changes
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    console.log(selectedCategory);
+    applyFilter();
+  };
+
+  const handleApplyFilter = () => {
+    applyFilter();
+  };
+  // Event handler for range slider change
+  // const handleRangeChange = (e) => {
+  //   const [min, max] = e.target.value.split(",");
+  //   setMinPrice(parseInt(min));
+  //   setMaxPrice(parseInt(max));
+  //   applyFilter();
+  // };
+
+  const handleMinPriceChange = (e) => {
+    setMinPrice(parseInt(e.target.value));
+  };
+
+  const handleMaxPriceChange = (e) => {
+    setMaxPrice(parseInt(e.target.value));
   };
 
   return (
     <>
-      <div className=" mt-[5rem] w-full  p-6  flex flex-wrap gap-10 bg-white  ">
+      <div className="  w-full  px-4  flex flex-wrap gap-10 bg-white  ">
         <nav className="w-[80vw] text-center text-red border-2 text-lime-800  text-2xl">
           <ul className="flex justify-between ml-[9rem]">
             {categories.map((product) => (
@@ -88,23 +121,52 @@ const Products = () => {
               </li>
             ))}
           </ul>
+          <div className="text-right text-emerald-600">
+            <label className="mr-2">Sort By:</label>
+            <select
+              id="sortBy"
+              value={sortBy}
+              className="px-2 py-1 rounded-lg border focus:outline-none"
+              onChange={handleSortChange}
+            >
+              <option value="price-low-to-high">Price Low to High</option>
+              <option value="price-high-to-low">Price High to Low</option>
+            </select>
+          </div>
         </nav>
-        <div className=" fixed top-[5rem] left-0 w-[8rem] h-[30rem] bg-indigo-500 ">
+        <div className=" fixed top-[5rem] left-0 w-[8rem] h-[30rem] bg-slate-200 ">
           <input
             type="number"
             name="minimum"
-            placeholder="minimum Value"
             className="w-[5rem] ml-4 mt-4"
             value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
+            onChange={handleMinPriceChange}
           />
           <input
             type="number"
             name="maximum"
-            placeholder="maximum Value"
-            className="w-[5rem] ml-4 mt-4"
             value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
+            onChange={handleMaxPriceChange}
+            className="w-[5rem] ml-4 mt-4"
+          />
+          <Slider
+            min={0}
+            max={20000}
+            range
+            value={[minPrice, maxPrice]}
+            onChange={([min, max]) => {
+              setMinPrice(min);
+              setMaxPrice(max);
+            }}
+            trackStyle={[{ backgroundColor: "#4CAF50" }]} // Change track color
+            handleStyle={[
+              {
+                backgroundColor: "#4CAF50",
+                borderColor: "#4CAF50",
+                // width: "1.5rem",
+                // height: "1.5rem",
+              }, // Change handle color and size
+            ]}
           />
           <button
             onClick={handleApplyFilter}
@@ -116,16 +178,6 @@ const Products = () => {
           <h3 className="text-slate-200 font-bold ml-2">{maxPrice}</h3>
           <div>
             <label className="text-slate-200 ml-2">Product</label>
-            {/* <input
-              type="range"
-              id="range"
-              name="Product_Range"
-              min="0"
-              max="20000"
-              value={maxPrice}
-              onChange={handleMaxPriceChange}
-              className="w-[5rem] block"
-            /> */}
           </div>
         </div>
         {filteredItems.map((item) => (
