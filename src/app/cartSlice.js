@@ -1,12 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
-import products from "../data/items";
-import items from "../data/items";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 const initialState = {
-  items: products,
+  items: [],
   item: [],
   totalQuantity: 0,
   totalPrice: 0,
+  status: "idle",
+  error: null,
 };
+
+// Async thunk for fetching products
+export const fetchProducts = createAsyncThunk(
+  "cart/fetchProducts",
+  async () => {
+    const response = await fetch(
+      "http://localhost:6001/api/products/admin/product"
+    );
+    const data = await response.json();
+    console.log(data.product);
+    return data.product; // Return the products array from the response
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -64,6 +79,20 @@ const cartSlice = createSlice({
       state.totalPrice = totalPrice;
       state.totalQuantity = totalQuantity;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload; // Set fetched products to items state
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 
