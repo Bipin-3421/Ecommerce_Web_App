@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/admin/Dashboard";
 import LoginPage from "./pages/LoginPage";
+import AdminRoute from "./pages/admin/ProtectedRoute";
+import AdminProduct from "./pages/AdminProduct";
 
 const App = () => {
   return (
@@ -17,7 +19,15 @@ const App = () => {
         <Route path="/product" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminRoute>
+              <Dashboard />
+            </AdminRoute>
+          }
+        />
+        <Route path="/admin/product" element={<AdminProduct />} />
       </Routes>
       <Footer />
     </Router>

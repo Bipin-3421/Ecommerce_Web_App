@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Ecommerce_logo.png";
 const Header = () => {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
   return (
     <header className="w-full h-[7rem]">
       <div>
@@ -38,6 +39,14 @@ const Header = () => {
             </li>
             <li>
               <Link to="/login">Login</Link>
+            </li>
+            {role && role === "admin" && (
+              <li>
+                <Link to="/admin/dashboard">Dashboard</Link>
+              </li>
+            )}
+            <li>
+              <Link to="/admin/product">Admin</Link>
             </li>
           </ul>
         </div>

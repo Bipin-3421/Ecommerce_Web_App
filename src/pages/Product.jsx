@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { addItem } from "../app/cartSlice";
+import { addItem, fetchProducts } from "../app/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
 
 const Products = () => {
   const items = useSelector((state) => state.cart.items);
+  // console.log(items);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredItems, setFilteredItems] = useState(items);
+  // console.log("filtered", filteredItems);
   const [sortBy, setSortBy] = useState("price-low-to-high");
+
+  const status = useSelector((state) => state.cart.status);
 
   const categories = [
     { id: 1, category: "All" },
@@ -17,7 +21,7 @@ const Products = () => {
     { id: 4, category: "Tiles" },
   ];
 
-  const price = items.map((item) => item.price);
+  // const price = items.map((item) => item.price);
 
   const [minPrice, setMinPrice] = useState(1500);
   const [maxPrice, setMaxPrice] = useState(20000);
@@ -44,7 +48,15 @@ const Products = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [selectedCategory, sortBy]);
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, status, selectedCategory, sortBy]);
+
+  // useEffect(() => {
+  //   applyFilter();
+  // }, [selectedCategory, sortBy]);
+
   // const filteredProducts = items.filter((product) => {
   //   return product.price <= maxPrice;
   // });
@@ -69,7 +81,6 @@ const Products = () => {
       sortedProducts.sort((a, b) => b.price - a.price);
     }
     setFilteredItems(sortedProducts);
-    console.log(sortedProducts);
   };
 
   const handleSortChange = (e) => {
@@ -79,7 +90,6 @@ const Products = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    console.log(selectedCategory);
     applyFilter();
   };
 
@@ -182,9 +192,14 @@ const Products = () => {
         </div>
         {filteredItems.map((item) => (
           <div key={item.id} className="flex flex-col items-center ml-[5rem]">
-            <img className="w-[15rem] " src={item.img} alt="img" />
+            <img
+              className="w-[20rem]"
+              src={`http://localhost:6001/${item.image} `}
+              alt="img"
+            />
             <h2>{item.title}</h2>
             <h3>Rs {item.price}</h3>
+            <h4>{item.description}</h4>
 
             <button
               onClick={() => dispatch(addItem(item))}
