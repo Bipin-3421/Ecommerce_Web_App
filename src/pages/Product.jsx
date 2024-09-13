@@ -47,11 +47,9 @@ const Products = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchProducts());
     applyFilter();
-    if (status === "idle") {
-      dispatch(fetchProducts());
-    }
-  }, [dispatch, status, selectedCategory, sortBy]);
+  }, [filteredItems]);
 
   // useEffect(() => {
   //   applyFilter();
@@ -193,11 +191,11 @@ const Products = () => {
         {filteredItems.map((item) => (
           <div key={item.id} className="flex flex-col items-center ml-[5rem]">
             <img
-              className="w-[20rem] h-[20rem] object-cover"
-              src={`http://localhost:6001/${item.image} `}
+              className="w-[20rem] h-[20rem]  object-cover"
+              src={`http://localhost:6001/${item.image}  `}
               alt="img"
             />
-            <h2>{item.title}</h2>
+            <h2 className="font-bold text-2xl">{item.name}</h2>
             <h3>Rs {item.price}</h3>
             <h4>{item.description}</h4>
 

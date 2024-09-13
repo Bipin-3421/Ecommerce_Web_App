@@ -45,7 +45,9 @@ const Header = () => {
             </li>
             {role && role === "admin" && (
               <li>
-                <Link to="/admin/dashboard">Dashboard</Link>
+                <Link className="mr-4" to="/admin/dashboard">
+                  Dashboard
+                </Link>
                 <Link to="/admin/product">Admin</Link>
               </li>
             )}

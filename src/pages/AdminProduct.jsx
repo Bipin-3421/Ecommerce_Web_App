@@ -10,10 +10,7 @@ const AdminProduct = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-    if (status === "idle") {
-      dispatch(fetchProducts());
-    }
-  }, [dispatch]);
+  }, []);
 
   if (status === "loading") {
     return <p>Loading...</p>;
