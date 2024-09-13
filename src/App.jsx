@@ -9,6 +9,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import AdminRoute from "./pages/admin/ProtectedRoute";
 import AdminProduct from "./pages/AdminProduct";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/product" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route
           path="/admin/dashboard"
           element={
@@ -27,7 +29,14 @@ const App = () => {
             </AdminRoute>
           }
         />
-        <Route path="/admin/product" element={<AdminProduct />} />
+        <Route
+          path="/admin/product"
+          element={
+            <AdminRoute>
+              <AdminProduct />
+            </AdminRoute>
+          }
+        />
       </Routes>
       <Footer />
     </Router>

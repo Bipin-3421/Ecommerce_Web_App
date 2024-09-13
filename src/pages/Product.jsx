@@ -193,7 +193,7 @@ const Products = () => {
         {filteredItems.map((item) => (
           <div key={item.id} className="flex flex-col items-center ml-[5rem]">
             <img
-              className="w-[20rem]"
+              className="w-[20rem] h-[20rem] object-cover"
               src={`http://localhost:6001/${item.image} `}
               alt="img"
             />

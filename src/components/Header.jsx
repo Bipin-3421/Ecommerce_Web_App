@@ -40,14 +40,15 @@ const Header = () => {
             <li>
               <Link to="/login">Login</Link>
             </li>
+            <li>
+              <Link to={"/signup"}> SignUp</Link>
+            </li>
             {role && role === "admin" && (
               <li>
                 <Link to="/admin/dashboard">Dashboard</Link>
+                <Link to="/admin/product">Admin</Link>
               </li>
             )}
-            <li>
-              <Link to="/admin/product">Admin</Link>
-            </li>
           </ul>
         </div>
       </nav>
