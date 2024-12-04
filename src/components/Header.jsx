@@ -1,15 +1,35 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Ecommerce_logo.png";
+import { PiSignIn } from "react-icons/pi";
+
 const Header = () => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   return (
-    <header className="w-full h-[7rem]">
-      <div>
-        <span className="bg-[#f26526] block text-center text-white">
-          One Stop Construction Solution
-        </span>
-      </div>
+    <header className=" h-[228.283px]">
+      <nav className="w-full h-[56px]   bg-black py-4 font-serif text-yellow-50">
+        <div className="m-auto px-3 max-w-[1329px]">
+          <div className="flex justify-between items-center">
+            <p className="flex justify-center gap-1 ">
+              Need help?
+              <a href="http://">01-5350440</a>| <a href="http://"> Contact</a>
+            </p>
+            <div>
+              <span>Buy Lenovo </span>
+              <span className="text-green-500">Legion GO</span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <PiSignIn className="w-[20px] h-[20px]" />
+              <li className="text-white text-[20px] ">
+                <Link to="/login">Login</Link>
+              </li>
+              <li className="text-white text-[20px]">
+                <Link to={"/signup"}> SignUp</Link>
+              </li>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       <nav className="flex justify-evenly items-center">
         <img
@@ -37,19 +57,16 @@ const Header = () => {
             <li>
               <Link to="/cart">Cart</Link>
             </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to={"/signup"}> SignUp</Link>
-            </li>
+
             {role && role === "admin" && (
-              <li>
-                <Link className="mr-4" to="/admin/dashboard">
-                  Dashboard
-                </Link>
-                <Link to="/admin/product">Admin</Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/admin/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/admin/product">Admin</Link>
+                </li>
+              </>
             )}
           </ul>
         </div>

@@ -6,10 +6,8 @@ import Slider from "rc-slider";
 
 const Products = () => {
   const items = useSelector((state) => state.cart.items);
-  // console.log(items);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredItems, setFilteredItems] = useState(items);
-  // console.log("filtered", filteredItems);
   const [sortBy, setSortBy] = useState("price-low-to-high");
 
   const status = useSelector((state) => state.cart.status);
@@ -20,8 +18,6 @@ const Products = () => {
     { id: 3, category: "Faucets" },
     { id: 4, category: "Tiles" },
   ];
-
-  // const price = items.map((item) => item.price);
 
   const [minPrice, setMinPrice] = useState(1500);
   const [maxPrice, setMaxPrice] = useState(20000);

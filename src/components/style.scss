@@ -1,8 +1,6 @@
-@import "../../mixins.scss";
+@import "../mixins.scss";
 .footer {
-  background-color: var(--black3);
   padding: 50px 0;
-  color: white;
   position: relative;
   .contentWrapper {
     display: flex;
@@ -57,11 +55,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #fff;
       cursor: pointer;
       transition: all ease 0.3s;
       &:hover {
         box-shadow: 0 0 0.625em var(--pink);
-        color: var(--pink);
+        color: #fff;
       }
     }
   }

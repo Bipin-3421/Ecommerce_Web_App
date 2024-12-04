@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import bannerImgOne from "../assets/banner/bannerImgOne.jpg";
 import bannerImgTwo from "../assets/banner/bannerImgTwo.jpg";
@@ -7,7 +5,6 @@ import bannerImgThree from "../assets/banner/bannerImgThree.jpg";
 import bannerImgFour from "../assets/banner/bannerImgFour.jpg";
 import bannerImgFive from "../assets/banner/bannerImgFive.jpg";
 const Home = () => {
-  const [dotActive, setDocActive] = useState(0);
   const settings = {
     dots: true,
     infinite: true,
